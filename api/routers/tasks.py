@@ -67,3 +67,13 @@ def get_task(task_id: int, db: Session = Depends(get_db)):
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
     return task
+
+@router.patch("/{task_id}/activate", response_model=TaskOut)
+def activate_task(task_id: int, db: Session = Depends(get_db)):
+    task = db.query(Task).filter(Task.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    task.status = TaskStatus.active
+    db.commit()
+    db.refresh(task)
+    return task

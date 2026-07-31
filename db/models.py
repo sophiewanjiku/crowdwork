@@ -134,6 +134,7 @@ class TaskAssignment(Base):
 
     task: Mapped["Task"] = relationship(back_populates="assignments")
     submission: Mapped["Submission | None"] = relationship(back_populates="assignment", uselist=False)
+    worker: Mapped["User"] = relationship()
 
 
 class Submission(Base):
